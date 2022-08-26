@@ -26,10 +26,13 @@ services:
         "complete-run"
       ]
     environment:
-      - DB_HOST=users-db
-      - DB_PORT=5432
-      - DB_USER=admin
-      - DB_PASS=admin
+      - PORT="8000"
+      - JWT_SECRET_KEY="C9nj2IOt5ocBwGjZ6JFsTQ6SKt/Vkq+McLdTXzvsr4+9m+zwgEwTs6puaJFhlypjsg/wsO0jyovKkXq2Kbydsx5jpMLYkXzRGtdFqOoPsz/fm9wcgY1CyWBigG1vhLrxgqADIJNEudGFXrjxndXijra9UuSUVTJrkwIfG0+PIcijOE30h46SKhaz44Wj3VFedch4eNQbU6zBx4T+tiBF80N0gG/rl01k0WMiy5a2SMT6HViTYtRqaSASSL8Lmp90M3D7ktgVN8pgBIw+EDBsGFPsc65FfppVvmEm4XR7UsLnzGk5pXIi12KXMdAarMtEfOV58yqqodCcqwwUiZUwUg=="
+      - PGHOST='users-db'
+      - PGUSER="admin"
+      - PGDATABASE="users-db"
+      - PGPASSWORD="admin"
+      - PGPORT="5432"
 
   api-gateway-service:
     build: ./api_gateway
@@ -39,5 +42,10 @@ services:
     depends_on:
       - "users-service"
     environment:
+      - PORT=3000
       - USER_APP_HOST=users-service
       - USER_APP_PORT=8000
+      - WALLET_APP_HOST=wallets-service
+      - WALLET_APP_PORT=8001
+      - RIDE_APP_HOST=rides-service
+      - RIDE_APP_PORT=8002
