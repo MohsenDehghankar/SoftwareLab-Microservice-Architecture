@@ -14,7 +14,7 @@ services:
     build: ./users
     image: users-image:latest
     ports:
-      - "8000"
+      - "8000:8000"
     depends_on:
       - "users-db"
     command:
@@ -22,17 +22,18 @@ services:
         "./wait-for-it.sh",
         "users-db:5432",
         "--",
-        "make",
-        "complete-run"
+        "npm",
+        "run",
+        "start"
       ]
     environment:
-      - PORT="8000"
+      - PORT=8000
       - JWT_SECRET_KEY="C9nj2IOt5ocBwGjZ6JFsTQ6SKt/Vkq+McLdTXzvsr4+9m+zwgEwTs6puaJFhlypjsg/wsO0jyovKkXq2Kbydsx5jpMLYkXzRGtdFqOoPsz/fm9wcgY1CyWBigG1vhLrxgqADIJNEudGFXrjxndXijra9UuSUVTJrkwIfG0+PIcijOE30h46SKhaz44Wj3VFedch4eNQbU6zBx4T+tiBF80N0gG/rl01k0WMiy5a2SMT6HViTYtRqaSASSL8Lmp90M3D7ktgVN8pgBIw+EDBsGFPsc65FfppVvmEm4XR7UsLnzGk5pXIi12KXMdAarMtEfOV58yqqodCcqwwUiZUwUg=="
-      - PGHOST='users-db'
-      - PGUSER="admin"
-      - PGDATABASE="users-db"
-      - PGPASSWORD="admin"
-      - PGPORT="5432"
+      - PGHOST=users-db
+      - PGUSER=admin
+      - PGDATABASE=users-db
+      - PGPASSWORD=admin
+      - PGPORT=5432
 
   api-gateway-service:
     build: ./api_gateway
