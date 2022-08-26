@@ -15,7 +15,7 @@ async function get_user_by_id(user_id) {
   const rows = await client.query(
     `SELECT * FROM users WHERE user_id='${user_id}'`
   );
-  return rows[0];
+  return rows.rows[0];
 }
 
 async function get_user_by_username(username) {
@@ -35,9 +35,14 @@ function get_token(user) {
   return jwt.sign(payload, privateKEY, { algorithm: "RS256" });
 }
 
+function verify_token(token) {
+  return jwt.verify(token, publicKEY);
+}
+
 module.exports = {
   add_user,
   get_user_by_id,
   get_user_by_username,
   get_token,
+  verify_token,
 };
