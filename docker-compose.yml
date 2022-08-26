@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  users-db:
+    image: postgres
+    ports:
+      - "5432"
+    environment:
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_DB: "users-db"
+
+  users-service:
+    build: ./users
+    image: users-image:latest
+    ports:
+      - "8000"
+    depends_on:
+      - "users-db"
+    command:
+      [
+        "./wait-for-it.sh",
+        "users-db:5432",
+        "--",
+        "make",
+        "complete-run"
+      ]
+    environment:
+      - DB_HOST=users-db
+      - DB_PORT=5432
+      - DB_USER=admin
+      - DB_PASS=admin
+
+  api-gateway-service:
+    build: ./api_gateway
+    image: api-gateway-image:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "users-service"
+    environment:
+      - USER_APP_HOST=users-service
+      - USER_APP_PORT=8000
